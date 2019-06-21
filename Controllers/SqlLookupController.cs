@@ -35,11 +35,11 @@ namespace SqlLookupProxy.Controllers
             //return ConvertToDictionary(_lookupService.Execute(lookupDefinition, new Dictionary<string,string>()));
         }
 
-        [HttpPost()]
-        public IDictionary<string, dynamic> Post([FromBody] LookupQuery query)
+        [HttpPost("{name}")]
+        public IDictionary<string, dynamic> Post(string name, [FromBody] Dictionary<string,string> replaceableValues)
         {
-            var lookupDefinition = _lookupDefinitionRepository.Find(query.Name);
-            var array = _lookupService.Execute(lookupDefinition, query.ReplaceableValues);
+            var lookupDefinition = _lookupDefinitionRepository.Find(name);
+            var array = _lookupService.Execute(lookupDefinition, replaceableValues);
             var index = 0;
             return array.ToDictionary<dynamic, string, dynamic>(x=> index++.ToString(), v=>v);
             //return ConvertToDictionary(_lookupService.Execute(lookupDefinition, new Dictionary<string,string>()));
